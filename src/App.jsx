@@ -1,12 +1,34 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useReducer, useRef, useState } from 'react';
 import './App.css';
 import SugieContext from './index';
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "increment":
+      if (state + 1 >= 10) {
+        state = 10;
+        return state;
+      } else {
+        return state + 1;
+      }
+    case "decrement": 
+      if (state - 1 <= 0) {
+        state = 0;
+        return state;
+      } else {
+        return state - 1;
+      }
+    default:
+      return state;
+  }
+};
 
 function App() {
   const [count, setCount] = useState(0);
   const [value, setValue] = useState(null);
   const sugieInfo = useContext(SugieContext);
   const inputRef = useRef();
+  const [state, dispatch] = useReducer(reducer, 0);
   
   const handleClick = () => {
     setCount(count + 1);
@@ -39,6 +61,13 @@ function App() {
       <input type="text" ref={inputRef} onChange={(e) => setValue(e.target.value)} />
       <button onClick={handleRef}>useRef</button>
       <p>{value}</p>
+
+      <hr />
+      <h1>useReducer</h1>
+      <p>カウント：{state}</p>
+      <button onClick={() => dispatch({ type: "increment" })}>＋</button>
+      <button onClick={() => dispatch({ type: "decrement" })}>－</button>
+
     </div>
   );
 }
