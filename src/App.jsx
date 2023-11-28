@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useMemo, useReducer, useRef, useSta
 import './App.css';
 import SugieContext from './index';
 import SomeChild from './SomeChild';
+import useLocalStorage from './useLocalStorage';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -77,6 +78,9 @@ function App() {
     alert('これは重い処理です。');
   }, [counter]);
 
+  // カスタムフック
+  const [age, setAge] = useLocalStorage("age", 24);
+
   
   return (
     <div className="App">
@@ -113,6 +117,11 @@ function App() {
       <h1>useCallback</h1>
       <SomeChild showCount={showCount} />
       <button onClick={() => setCounter(counter + 1)}>＋</button>
+
+      <hr />
+      <h1>カスタムフック</h1>
+      <p>{age}</p>
+      <button onClick={() => setAge(80)}>年齢をセット</button>
     </div>
   );
 }
