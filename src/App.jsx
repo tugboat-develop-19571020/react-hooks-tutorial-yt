@@ -1,6 +1,7 @@
-import { useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import './App.css';
 import SugieContext from './index';
+import SomeChild from './SomeChild';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -45,8 +46,6 @@ function App() {
     // setCount(count + 1);
   }, [count]);
 
-
-
   // useMemo
   const [count01, setCount01] = useState(0);
   const [count02, setCount02] = useState(0);
@@ -66,6 +65,18 @@ function App() {
     }
     return count02 * count02;
   }, [count02]);
+
+  // useCallback 関数のメモ化
+  const [counter, setCounter] = useState(0);
+
+  // const showCount = () => {
+  //   alert('これは重い処理です。');
+  // }
+
+  const showCount = useCallback(() => {
+    alert('これは重い処理です。');
+  }, [counter]);
+
   
   return (
     <div className="App">
@@ -97,6 +108,11 @@ function App() {
       <div>結果：{square}</div>
       <button onClick={() => setCount01(count01 + 1)}>＋</button>
       <button onClick={() => setCount02(count02 + 1)}>＋</button>
+
+      <hr />
+      <h1>useCallback</h1>
+      <SomeChild showCount={showCount} />
+      <button onClick={() => setCounter(counter + 1)}>＋</button>
     </div>
   );
 }
