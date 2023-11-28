@@ -1,4 +1,4 @@
-import { useContext, useEffect, useReducer, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import './App.css';
 import SugieContext from './index';
 
@@ -44,6 +44,28 @@ function App() {
     console.log("Hello Hooks");
     // setCount(count + 1);
   }, [count]);
+
+
+
+  // useMemo
+  const [count01, setCount01] = useState(0);
+  const [count02, setCount02] = useState(0);
+
+  // const square = () => {
+  //   let i = 0;
+  //   while (i < 200000000) {
+  //     i++;
+  //   }
+  //   return count02 * count02;
+  // };
+
+  const square = useMemo(() => {
+    let i = 0;
+    while (i < 2000000000) {
+      i++;
+    }
+    return count02 * count02;
+  }, [count02]);
   
   return (
     <div className="App">
@@ -68,6 +90,13 @@ function App() {
       <button onClick={() => dispatch({ type: "increment" })}>＋</button>
       <button onClick={() => dispatch({ type: "decrement" })}>－</button>
 
+      <hr />
+      <h1>useMemo</h1>
+      <div>カウント１：{count01}</div>
+      <div>カウント２：{count02}</div>
+      <div>結果：{square}</div>
+      <button onClick={() => setCount01(count01 + 1)}>＋</button>
+      <button onClick={() => setCount02(count02 + 1)}>＋</button>
     </div>
   );
 }
